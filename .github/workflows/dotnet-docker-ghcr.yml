@@ -32,14 +32,14 @@ jobs:
           /o:"${{ secrets.SONAR_ORG }}" \
           /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
 
-    - name: Restore
-      run: dotnet restore
+    - name: Restore App
+      run: dotnet restore src/Devopsproj.App/Devopsproj.App.csproj
 
-    - name: Build
-      run: dotnet build --no-restore
+    - name: Build App
+      run: dotnet build src/Devopsproj.App/Devopsproj.App.csproj --no-restore
 
-    - name: Test
-      run: dotnet test --no-build --verbosity normal
+    - name: Run Tests
+      run: dotnet test tests/Devopsproj.Tests/Devopsproj.Tests.csproj --verbosity normal
 
     - name: SonarCloud End
       run: |
