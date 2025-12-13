@@ -29,7 +29,7 @@ jobs:
       run: |
         dotnet sonarscanner begin \
           /k:"${{ secrets.SONAR_PROJECT_KEY }}" \
-          /o:"${{ secrets.SONAR_ORG_KEY }}" \
+          /o:"${{ secrets.SONAR_ORG }}" \
           /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
 
     - name: Restore
