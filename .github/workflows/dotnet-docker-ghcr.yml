@@ -1,0 +1,43 @@
+name: .NET Build Test Sonar Docker Push
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+
+    - name: Sonar Begin
+      run: |
+        dotnet tool install --global dotnet-sonarscanner
+        dotnet sonarscanner begin /k:"<SONAR_PROJECT_KEY>" /o:"<SONAR_ORG_KEY>" /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+
+    - run: dotnet restore
+    - run: dotnet build
+    - run: dotnet test
+
+    - name: Sonar End
+      run: dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+
+    - name: Docker Login
+      uses: docker/login-action@v3
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Build & Push Image
+      run: |
+        docker build -t ghcr.io/${{ github.repository_owner }}/devopsproj:latest .
+        docker push ghcr.io/${{ github.repository_owner }}/devopsproj:latest
