@@ -1,4 +1,6 @@
 using System;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Hosting;
 
 namespace Devopsproj.App
 {
@@ -6,12 +8,19 @@ namespace Devopsproj.App
     {
         public static void Main(string[] args)
         {
-            Console.WriteLine("Hello from Devopsproj 🚀 .NET App");
+            var builder = WebApplication.CreateBuilder(args);
+            var app = builder.Build();
+
+            app.MapGet("/", () => "Hello from Devopsproj 🚀 Running on Render!");
+
+            app.Run();
         }
 
+        // Keeping your existing method – tests will still pass
         public static int Add(int a, int b)
         {
             return a + b;
         }
     }
 }
+
