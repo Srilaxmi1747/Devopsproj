@@ -5,4 +5,4 @@ Includes:
 - App.csproj
 - Test project
 - Dockerfile
-- GitHub Actions with SonarCloud + GHCR
+- GitHub Actions with SonarCloud +  GHCR
